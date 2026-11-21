@@ -21,6 +21,13 @@ if [[ "$check" == race ]]; then
   set -e
   printf '%s\n' "$result" > "$artifacts/exit-code.txt"
   tail -n 20 "$artifacts/race.jsonl"
+elif [[ "$check" == lint ]]; then
+  set +e
+  hack/run-tool.sh golangci-lint run --timeout=15m ./... > "$artifacts/lint.log" 2>&1
+  result=$?
+  set -e
+  printf '%s\n' "$result" > "$artifacts/exit-code.txt"
+  tail -n 70 "$artifacts/lint.log"
 else
   set +e
   bash hack/verify-all.sh > "$artifacts/verify.log" 2>&1

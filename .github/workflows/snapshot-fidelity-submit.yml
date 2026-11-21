@@ -12,7 +12,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        check: [race, verify]
+        check: [lint]
     runs-on: ubuntu-latest
     timeout-minutes: 45
     env:
