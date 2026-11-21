@@ -28,7 +28,7 @@ jobs:
         with:
           go-version: '1.27.4'
           cache: true
-      - uses: actions/setup-python@a3090ff319e9e9d264dba458525e58b543b56d62
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1
         with:
           python-version: '3.12'
       - name: Validate submitted source
