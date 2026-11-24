@@ -1,0 +1,34 @@
+name: Review 3736 validation
+on:
+  push:
+    branches: [ci/review-3736-20261124]
+permissions:
+  contents: read
+jobs:
+  validate:
+    strategy:
+      fail-fast: false
+      matrix:
+        check: [race, verify]
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    env:
+      GOMAXPROCS: '4'
+      GOMEMLIMIT: 4GiB
+      GOFLAGS: -p=4
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e
+        with:
+          go-version-file: go.mod
+          cache: true
+      - name: Validate source
+        run: bash .github/review-3736.sh "${{ matrix.check }}"
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: review-3736-${{ matrix.check }}
+          path: _artifacts/
+          if-no-files-found: error
